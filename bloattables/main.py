@@ -1,9 +1,12 @@
+import csv
 import datetime
-from csv import writer
 from io import StringIO
+from pathlib import Path
 import random
-from typing import List, TypeVar
+from typing import List, Optional, TypeVar
 
+import boto3
+from botocore.exceptions import ClientError
 import pandas as pd
 import pandera as pa
 import numpy
@@ -30,7 +33,7 @@ def load_data(filename: str) -> List[str]:
         A list of string values taken from the text file.
 
     """
-    with open(filename) as f:
+    with open(Path("bloattables/assets", filename)) as f:
         return f.read().splitlines()
 
 
@@ -57,13 +60,13 @@ def generate_data() -> pd.DataFrame:
     """
     # Prepares to store a CSV file in memory.
     output = StringIO()
-    csv_writer = writer(output)
+    csv_writer = csv.writer(output)
     csv_writer.writerow(['person_id', 'fname', 'lname', 'sex', 'date_of_birth'])
 
     # Loads each list of names.
-    male_fnames = load_data('assets/fnames/male')
-    female_fnames = load_data('assets/fnames/female')
-    lnames = load_data('assets/lnames/lnames')
+    male_fnames = load_data('fnames/male')
+    female_fnames = load_data('fnames/female')
+    lnames = load_data('lnames/lnames')
 
     # Adds new rows of data to the CSV
     for no_row in range(100_000):
@@ -105,4 +108,45 @@ def check_data(df: pd.DataFrame) -> pd.DataFrame:
     return schema(df)
 
 
+def bucket_push(file_name: str | Path, bucket: str, object_name: Optional[str] = None) -> bool:
+    """Upload a file to an S3 bucket.
+
+    Args:
+        file_name: The path to the file to be uploaded.
+        bucket: The name of the bucket to be uploaded to.
+        object_name: The name of the object to be stored in the bucket.
+
+    Returns:
+        A boolean for whether or not the file was successfully uploaded.
+
+    """
+    # If S3 object_name was not specified, use file_name
+    if object_name is None:
+        object_name = Path(file_name).name
+
+    # Finds access keys for user 'ilya', the first non-header row in the
+    # access keys CSV.
+    with open('access_keys.csv') as f:
+        reader = csv.reader(f)
+        next(reader)
+        access_id, access_key = next(reader)
+
+    # Opens a connection to the AWS S3 instance.
+    s3_client = boto3.resource(
+        's3', aws_access_key_id=access_id, aws_secret_access_key=access_key
+    )
+
+    # Finds a particular bucket.
+    bucket = s3_client.Bucket(bucket)
+
+    # Uploads the file to the bucket.
+    try:
+        bucket.upload_file(file_name, object_name)
+    except ClientError:
+        return False
+
+    return True
+
+
 check_data(generate_data()).to_parquet("/tmp/test_data.parquet")
+bucket_push("/tmp/test_data.parquet", "byte-camp-person-data", "test_data")

@@ -1,2 +1,5 @@
 # Pycharm folder
 .idea/
+
+# Access keys for accessing S3 storage
+access_keys.csv
