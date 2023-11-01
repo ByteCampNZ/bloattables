@@ -1,5 +1,11 @@
 # Pycharm folder
 .idea/
 
-# Access keys for accessing S3 storage
-access_keys.csv
+# Cache folders
+**/__pycache__/
+
+# Distribution folder
+dist/
+
+# Egg folder
+src/bloattables.egg-info

@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bloattables"
+version = "0.1.0"
+authors = [
+    {name = "Elliot Simpson", email = "elliot@p-s.co.nz"},
+]
+description = "Simple library for creating and uploading test data to the cloud."
+readme = "README.rst"
+requires-python = ">=3.7"
+keywords = ["cloud", "aws", "data"]
+license = {text = "GNU AGPL"}
+classifiers = [
+      'Intended Audience :: Developers',
+      'Programming Language :: Python :: 3',
+]
+dependencies = [
+    "numpy==1.26.0",
+    "pandas==2.1.1",
+    "pandera==0.17.1",
+    "boto3~=1.28.57",
+    "botocore~=1.31.57"
+]
+
+[project.optional-dependencies]
+dev = ["build"]
+
+[project.urls]
+"Homepage" = "https://github.com/ByteCampNZ/bloattables"
