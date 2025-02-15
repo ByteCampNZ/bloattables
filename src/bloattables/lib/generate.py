@@ -18,7 +18,7 @@ import bloattables.lib.access as access
 __version__: str = importlib.metadata.version('bloattables')
 
 
-_T: TypeVar = TypeVar('_T')
+_T = TypeVar('_T')
 
 
 def load_data(*args: str | Path) -> list[str]:
