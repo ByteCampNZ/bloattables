@@ -15,10 +15,10 @@ import numpy
 import bloattables.lib.access as access
 
 
-__version__: str = importlib.metadata.version('bloattables')
+__version__: str = importlib.metadata.version("bloattables")
 
 
-_T = TypeVar('_T')
+_T = TypeVar("_T")
 
 
 def load_data(*args: str | Path) -> list[str]:
@@ -36,7 +36,7 @@ def load_data(*args: str | Path) -> list[str]:
     root = Path(__file__).parent.parent
 
     # Obtains the contents of the file.
-    with open(root / 'assets' / Path(*args)) as f:
+    with open(root / "assets" / Path(*args)) as f:
         contents = f.read().splitlines()
 
     return contents
@@ -68,12 +68,12 @@ def generate_data(quantity: int = 1_000) -> pd.DataFrame:
     # Prepares to store a CSV file in memory.
     output = StringIO()
     csv_writer = csv.writer(output)
-    csv_writer.writerow(['person_id', 'fname', 'lname', 'sex', 'date_of_birth'])
+    csv_writer.writerow(["person_id", "fname", "lname", "sex", "date_of_birth"])
 
     # Loads each list of names.
-    male_fnames = load_data('fnames', 'male')
-    female_fnames = load_data('fnames', 'female')
-    lnames = load_data('lnames', 'lnames')
+    male_fnames = load_data("fnames", "male")
+    female_fnames = load_data("fnames", "female")
+    lnames = load_data("lnames", "lnames")
 
     # Finds the time today.
     today = pd.Timestamp.today()
@@ -82,8 +82,8 @@ def generate_data(quantity: int = 1_000) -> pd.DataFrame:
     for no_row in range(quantity):
         # Obtains the values to be written to the CSV.
         df_id = no_row + 1
-        sex = random.choice(('male', 'female'))
-        fname = sample_triangular(male_fnames if sex == 'male' else female_fnames)
+        sex = random.choice(("male", "female"))
+        fname = sample_triangular(male_fnames if sex == "male" else female_fnames)
         lname = sample_triangular(lnames)
         days_old = random.randint(a=1, b=32850)
         date_of_birth = today - datetime.timedelta(days=days_old)
@@ -95,7 +95,7 @@ def generate_data(quantity: int = 1_000) -> pd.DataFrame:
     output.seek(0)
 
     # Returns the CSV contents as a dataframe.
-    return pd.read_csv(output, parse_dates=['date_of_birth'])
+    return pd.read_csv(output, parse_dates=["date_of_birth"])
 
 
 def check_data(df: pd.DataFrame) -> pd.DataFrame:
@@ -111,24 +111,32 @@ def check_data(df: pd.DataFrame) -> pd.DataFrame:
     # Determines the two dates between which it is expected that the
     # date of birth is found.
     today = pd.Timestamp.today()
-    earliest_permissible_dob = pd.Timestamp('1920-01-01')
+    earliest_permissible_dob = pd.Timestamp("1920-01-01")
 
     # Creates a schema to validate the provided data.
-    schema = pa.DataFrameSchema({
-        'person_id': pa.Column(int, pa.Check.greater_than(0)),
-        'fname': pa.Column(str),
-        'lname': pa.Column(str),
-        'sex': pa.Column(str, checks=[pa.Check.str_matches('male|female')]),
-        'date_of_birth': pa.Column(pa.dtypes.DateTime, pa.Check(
-            lambda dt: earliest_permissible_dob <= dt <= today, element_wise=True
-        ))
-    })
+    schema = pa.DataFrameSchema(
+        {
+            "person_id": pa.Column(int, pa.Check.greater_than(0)),
+            "fname": pa.Column(str),
+            "lname": pa.Column(str),
+            "sex": pa.Column(str, checks=[pa.Check.str_matches("male|female")]),
+            "date_of_birth": pa.Column(
+                pa.dtypes.DateTime,
+                pa.Check(
+                    lambda dt: earliest_permissible_dob <= dt <= today,
+                    element_wise=True,
+                ),
+            ),
+        }
+    )
 
     # Returns the validated data.
     return schema.validate(df)
 
 
-def bucket_push(file_name: str | Path, bucket: str, object_name: str | None = None) -> bool:
+def bucket_push(
+    file_name: str | Path, bucket: str, object_name: str | None = None
+) -> bool:
     """Upload a file to an S3 bucket.
 
     Args:
@@ -149,7 +157,7 @@ def bucket_push(file_name: str | Path, bucket: str, object_name: str | None = No
 
     # Opens a connection to the AWS S3 instance.
     s3_client = boto3.resource(
-        's3', aws_access_key_id=access_id, aws_secret_access_key=access_key
+        "s3", aws_access_key_id=access_id, aws_secret_access_key=access_key
     )
 
     # Finds a particular bucket.
@@ -164,11 +172,7 @@ def bucket_push(file_name: str | Path, bucket: str, object_name: str | None = No
     return True
 
 
-def create_parquet(
-        location: str | Path,
-        *,
-        quantity: int = 1_000
-):
+def create_parquet(location: str | Path, *, quantity: int = 1_000):
     """Creates a parquet file with test data and saves it to a specified
     location.
 

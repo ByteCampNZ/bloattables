@@ -26,6 +26,7 @@ dependencies = [
     "python-dotenv>=1.0.1",
     "pyathena>=3.12.2",
     "pyarrow>=19.0.0",
+    "ruff>=0.9.6",
 ]
 
 [project.optional-dependencies]
@@ -38,4 +39,5 @@ dev = ["build"]
 dev = [
     "boto3-stubs>=1.36.21",
     "pandas-stubs>=2.2.3.241126",
+    "ruff>=0.9.6",
 ]
