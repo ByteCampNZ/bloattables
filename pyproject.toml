@@ -27,6 +27,7 @@ dependencies = [
     "pyathena>=3.12.2",
     "pyarrow>=19.0.0",
     "ruff>=0.9.6",
+    "google-cloud-storage>=3.0.0",
 ]
 
 [project.optional-dependencies]

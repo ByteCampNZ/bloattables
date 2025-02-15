@@ -1,10 +1,8 @@
-from bloattables.lib.generate import bucket_push, create_parquet
+from pathlib import Path
 
-# from bloattables.lib.fetch import fetch
-
+from bloattables.lib.generate import create_parquet, upload_to_google_cloud
 
 if __name__ == "__main__":
-    create_parquet(location="/tmp/test_data.parquet")
-    bucket_push("/tmp/test_data.parquet", "byte-camp-person-data", "test_data")
-    # results = fetch('byte-camp-person-data', 'ap-southeast-2', 'test_data')
-    # print(results)
+    location = Path("/tmp/test_data.parquet")
+    create_parquet(location=location, quantity=10)
+    upload_to_google_cloud(path_to_file=location)

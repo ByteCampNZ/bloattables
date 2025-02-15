@@ -1,18 +1,17 @@
 import csv
 import datetime
 import importlib.metadata
+import io
 import random
 from io import StringIO
 from pathlib import Path
 from typing import TypeVar
 
-import boto3
 import numpy
 import pandas as pd
 import pandera as pa
-from botocore.exceptions import ClientError
-
-import bloattables.lib.access as access
+from google.cloud import storage
+from pyarrow import parquet
 
 __version__: str = importlib.metadata.version("bloattables")
 
@@ -133,44 +132,6 @@ def check_data(df: pd.DataFrame) -> pd.DataFrame:
     return schema.validate(df)
 
 
-def bucket_push(
-    file_name: str | Path, bucket: str, object_name: str | None = None
-) -> bool:
-    """Upload a file to an S3 bucket.
-
-    Args:
-        file_name: The path to the file to be uploaded.
-        bucket: The name of the bucket to be uploaded to.
-        object_name: The name of the object to be stored in the bucket.
-
-    Returns:
-        A boolean for whether or not the file was successfully uploaded.
-    """
-    # If S3 object_name was not specified, use file_name
-    if object_name is None:
-        object_name = Path(file_name).name
-
-    # Finds access keys for user 'ilya', the first non-header row in the
-    # access keys CSV.
-    access_id, access_key = access.credentials()
-
-    # Opens a connection to the AWS S3 instance.
-    s3_client = boto3.resource(
-        "s3", aws_access_key_id=access_id, aws_secret_access_key=access_key
-    )
-
-    # Finds a particular bucket.
-    bucket = s3_client.Bucket(bucket)
-
-    # Uploads the file to the bucket.
-    try:
-        bucket.upload_file(file_name, object_name)
-    except ClientError:
-        return False
-
-    return True
-
-
 def create_parquet(location: str | Path, *, quantity: int = 1_000):
     """Creates a parquet file with test data and saves it to a specified
     location.
@@ -182,3 +143,14 @@ def create_parquet(location: str | Path, *, quantity: int = 1_000):
     data = generate_data(quantity)
     check_data(data)
     data.to_parquet(location)
+
+
+def upload_to_google_cloud(path_to_file: Path) -> None:
+    table = parquet.read_table(path_to_file)
+    parquet_buffer = io.BytesIO()
+    parquet.write_table(table, parquet_buffer)
+    parquet_bytes = parquet_buffer.getvalue()
+    storage_client = storage.Client()
+    bucket = storage_client.bucket("bloattables-customers")
+    blob = bucket.blob(blob_name="test_data.parquet")
+    blob.upload_from_string(parquet_bytes, content_type="application/octet-stream")
