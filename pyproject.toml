@@ -10,7 +10,7 @@ authors = [
 ]
 description = "Simple library for creating and uploading test data to the cloud."
 readme = "README.rst"
-requires-python = ">=3.7"
+requires-python = ">=3.12"
 keywords = ["cloud", "aws", "data"]
 license = {text = "GNU AGPL"}
 classifiers = [
