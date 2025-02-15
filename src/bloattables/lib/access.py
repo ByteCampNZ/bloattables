@@ -1,11 +1,10 @@
 import csv
 import os
-from typing import Tuple
 
 import dotenv
 
 
-def credentials() -> Tuple[str, str]:
+def credentials() -> tuple[str, str]:
     """Obtains the credentials for connecting to the access bucket.
 
     Returns:

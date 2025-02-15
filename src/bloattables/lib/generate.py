@@ -4,7 +4,7 @@ import importlib.metadata
 from io import StringIO
 from pathlib import Path
 import random
-from typing import List, Optional, TypeVar
+from typing import TypeVar
 
 import boto3
 from botocore.exceptions import ClientError
@@ -21,7 +21,7 @@ __version__: str = importlib.metadata.version('bloattables')
 _T: TypeVar = TypeVar('_T')
 
 
-def load_data(*args: str | Path) -> List[str]:
+def load_data(*args: str | Path) -> list[str]:
     """Takes the individual lines within a text file and returns the
     contents as a list.
 
@@ -42,7 +42,7 @@ def load_data(*args: str | Path) -> List[str]:
     return contents
 
 
-def sample_triangular(items: List[_T]) -> _T:
+def sample_triangular(items: list[_T]) -> _T:
     """Uses a list of items and samples from a triangular sample where
     the mode is the first index.
 
@@ -128,7 +128,7 @@ def check_data(df: pd.DataFrame) -> pd.DataFrame:
     return schema.validate(df)
 
 
-def bucket_push(file_name: str | Path, bucket: str, object_name: Optional[str] = None) -> bool:
+def bucket_push(file_name: str | Path, bucket: str, object_name: str | None = None) -> bool:
     """Upload a file to an S3 bucket.
 
     Args:
