@@ -9,3 +9,6 @@ dist/
 
 # Egg folder
 src/bloattables.egg-info
+
+# Virtual environment
+.venv/
