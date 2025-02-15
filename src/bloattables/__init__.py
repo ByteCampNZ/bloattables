@@ -1,5 +1,5 @@
 from bloattables.lib.generate import bucket_push, create_parquet
-from bloattables.lib.fetch import fetch
+# from bloattables.lib.fetch import fetch
 
 
 if __name__ == '__main__':
