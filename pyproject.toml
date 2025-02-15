@@ -34,4 +34,5 @@ dev = ["build"]
 [dependency-groups]
 dev = [
     "boto3-stubs>=1.36.21",
+    "pandas-stubs>=2.2.3.241126",
 ]
