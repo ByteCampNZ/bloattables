@@ -21,6 +21,7 @@ dependencies = [
     { name = "numpy" },
     { name = "pandas" },
     { name = "pandera" },
+    { name = "pyathena" },
     { name = "python-dotenv" },
 ]
 
@@ -43,6 +44,7 @@ requires-dist = [
     { name = "numpy", specifier = "==1.26.0" },
     { name = "pandas", specifier = "==2.1.1" },
     { name = "pandera", specifier = "==0.17.1" },
+    { name = "pyathena", specifier = ">=3.12.2" },
     { name = "python-dotenv", specifier = ">=1.0.1" },
 ]
 provides-extras = ["dev"]
@@ -127,6 +129,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/d8/53/6f443c9a4a8358a93a6792e2acffb9d9d5cb0a5cfd8802644b7b1c9a02e4/colorama-0.4.6.tar.gz", hash = "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44", size = 27697 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/d1/d6/3965ed04c63042e047cb6a3e6ed1a63a35087b6a609aa3a15ed8ac56c221/colorama-0.4.6-py2.py3-none-any.whl", hash = "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6", size = 25335 },
+]
+
+[[package]]
+name = "fsspec"
+version = "2025.2.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/b5/79/68612ed99700e6413de42895aa725463e821a6b3be75c87fcce1b4af4c70/fsspec-2025.2.0.tar.gz", hash = "sha256:1c24b16eaa0a1798afa0337aa0db9b256718ab2a89c425371f5628d22c3b6afd", size = 292283 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e2/94/758680531a00d06e471ef649e4ec2ed6bf185356a7f9fbfbb7368a40bd49/fsspec-2025.2.0-py3-none-any.whl", hash = "sha256:9de2ad9ce1f85e1931858535bc882543171d197001a0a5eb2ddc04f1781ab95b", size = 184484 },
 ]
 
 [[package]]
@@ -230,6 +241,22 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/c3/cf/6724168f2057da20d523af3c6a17e803fd7d79f2460a7d4f89a8d4758eb4/pandera-0.17.1.tar.gz", hash = "sha256:57d778585158eba5981ddf6f68e0bbc507f976a7ed617608299a8657a997216e", size = 160444 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/14/90/902a98afa4e82974185d9267aa1acb91ed9521d6571710c0854b440802f0/pandera-0.17.1-py3-none-any.whl", hash = "sha256:462357d226bc587635955f25f35c6d37e5295ba5aa0479fc1a8c16d9fd7a1a1d", size = 203374 },
+]
+
+[[package]]
+name = "pyathena"
+version = "3.12.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "boto3" },
+    { name = "botocore" },
+    { name = "fsspec" },
+    { name = "python-dateutil" },
+    { name = "tenacity" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/c9/19/2c45e303878112bc92c42c303e714b5aeab852ec95fb40f057450370e3c8/pyathena-3.12.2.tar.gz", hash = "sha256:035ebad637c64c26fc83c1da87b46134e52c58c95186899f9ec6b110c4ea8658", size = 56195 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/bf/39/1d4e48a7f069d69e72e490a239fbeaff2220ffa893cc5d6686981898be54/pyathena-3.12.2-py3-none-any.whl", hash = "sha256:f27f89a04c2278a6e898c25a1ef64892bfacfb38134b5c69f646a5034dd67eb6", size = 75956 },
 ]
 
 [[package]]
@@ -343,6 +370,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/94/e7/b2c673351809dca68a0e064b6af791aa332cf192da575fd474ed7d6f16a2/six-1.17.0.tar.gz", hash = "sha256:ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81", size = 34031 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/b7/ce/149a00dd41f10bc29e5921b496af8b574d8413afcd5e30dfa0ed46c2cc5e/six-1.17.0-py2.py3-none-any.whl", hash = "sha256:4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274", size = 11050 },
+]
+
+[[package]]
+name = "tenacity"
+version = "9.0.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/cd/94/91fccdb4b8110642462e653d5dcb27e7b674742ad68efd146367da7bdb10/tenacity-9.0.0.tar.gz", hash = "sha256:807f37ca97d62aa361264d497b0e31e92b8027044942bfa756160d908320d73b", size = 47421 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b6/cb/b86984bed139586d01532a587464b5805f12e397594f19f931c4c2fbfa61/tenacity-9.0.0-py3-none-any.whl", hash = "sha256:93de0c98785b27fcf659856aa9f54bfbd399e29969b0621bc7f762bd441b4539", size = 28169 },
 ]
 
 [[package]]
