@@ -35,6 +35,9 @@ dev = ["build"]
 [project.urls]
 "Homepage" = "https://github.com/ByteCampNZ/bloattables"
 
+[tool.ruff.lint]
+select = ["E", "F", "UP", "B", "SIM", "I"]
+
 [dependency-groups]
 dev = [
     "boto3-stubs>=1.36.21",

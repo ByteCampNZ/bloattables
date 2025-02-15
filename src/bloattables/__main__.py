@@ -1,4 +1,5 @@
 from bloattables.lib.generate import bucket_push, create_parquet
+
 # from bloattables.lib.fetch import fetch
 
 

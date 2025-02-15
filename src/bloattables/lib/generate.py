@@ -1,19 +1,18 @@
 import csv
 import datetime
 import importlib.metadata
+import random
 from io import StringIO
 from pathlib import Path
-import random
 from typing import TypeVar
 
 import boto3
-from botocore.exceptions import ClientError
+import numpy
 import pandas as pd
 import pandera as pa
-import numpy
+from botocore.exceptions import ClientError
 
 import bloattables.lib.access as access
-
 
 __version__: str = importlib.metadata.version("bloattables")
 
