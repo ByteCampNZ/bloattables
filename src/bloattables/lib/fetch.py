@@ -1,7 +1,5 @@
-from dotenv import load_dotenv
 from pyathena import connect
 from pyathena.connection import Connection
-from pyathena.cursor import Cursor
 
 import bloattables.lib.access as access
 
